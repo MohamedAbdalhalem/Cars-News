@@ -1,0 +1,11 @@
+body{
+    font-family: "Oswald", sans-serif;
+}
+.card img{
+    height: 350px;
+    object-fit: cover;
+}
+.dropdown-item:hover{
+    background-color: blue !important;
+    color: white !important;
+} 
