@@ -2,32 +2,35 @@ var teamname = document.querySelector('#teamname');
 var articles = document.querySelector("#articles");
 var options = document.querySelector("#options");
 
+
 options.addEventListener('click', (e) => {
     if (e.target.classList.contains("dropdown-item")) {
         getarticles(e.target.innerHTML)
     }
 })
+// initilize request
 var newreq = new XMLHttpRequest()   
 function getarticles(car) {
-    newreq.open("GET", `https://newsapi.org/v2/everything?q=${car}&from=2025-04-07&sortBy=publishedAt&apiKey=74b23d710781426dbfc841b8fd5199cf`)
+    newreq.open("GET", `https://gnews.io/api/v4/search?q=${car}&apikey=d562e9cbf06acdbc6b1df81809bf8d33`)
     newreq.send()
     newreq.addEventListener("readystatechange", () => {
         if (newreq.readyState === 4) {
-            displayarticles(JSON.parse(newreq.response).articles.slice(0, 10))
+            displayarticles(JSON.parse(newreq.response).articles)
             teamname.innerHTML = car;
             document.title = `${car} News`
-            localStorage.setItem('team',car)
+            localStorage.setItem('car',car)
         }
     })
 }
+// function to display the data
 function displayarticles(news) {
     var str = ``
     for (var i = 0; i < news.length; i++){
         str += `<div class="col-lg-6">
         <div class="card mb-3 h-100">
-  <img src="${news[i].urlToImage ?? './images/1000_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg'}" class="card-img-top" alt="...">
+  <img src="${news[i].image ?? './images/1000_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg'}" class="card-img-top" alt="...">
   <div class="card-body flex flex-column align-content-end">
-    <h5 class="card-title">Author : ${news[i].author ?? 'Known'}</h5>
+    <h5 class="card-title">Author : ${news[i].source.name ?? 'Known'}</h5>
     <p class="card-text text-primary opacity-50">${news[i].title}</p>
     <p class="card-text">${news[i].content}</p>
     <p class="card-text"><small class="text-body-secondary">${news[i].publishedAt}</small></p>
@@ -38,9 +41,9 @@ function displayarticles(news) {
     }
     articles.innerHTML = str
 }
-if (localStorage.getItem("team")) {
-    getarticles(localStorage.getItem("team"))
+
+if (localStorage.getItem("car")) {
+    getarticles(localStorage.getItem("car"))
 } else {
-    getarticles("real")
+    getarticles("BMW")
 }
- 
