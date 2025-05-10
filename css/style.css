@@ -9,3 +9,11 @@ body{
     background-color: blue !important;
     color: white !important;
 } 
+@media (min-width: 992px) { 
+    .slider{
+        width: 25%;
+    }
+ }
+#open{
+    cursor: pointer;
+}
