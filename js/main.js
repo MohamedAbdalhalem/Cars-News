@@ -5,6 +5,15 @@ var options = document.querySelector("#options");
 var openCLoseIcon = document.querySelector("#open")
 var heeader = document.querySelector("#header")
 var slider = document.querySelector(".slider")
+function closeSlider() {
+        slider.style.width = "auto"        
+        slider.classList.add("bg-transparent")
+        slider.classList.remove("bg-white")
+        heeader.classList.add("d-none")
+        heeader.classList.remove("d-block")        
+        options.classList.add("d-none")
+        options.classList.remove("d-block")
+}
 openCLoseIcon.addEventListener("click", () => {
     if (heeader.classList.contains("d-none")) {
         slider.style.width = "60%"
@@ -15,27 +24,16 @@ openCLoseIcon.addEventListener("click", () => {
         options.classList.add("d-block")
         options.classList.remove("d-none")
     } else {
-        slider.style.width = "auto"        
-        slider.classList.add("bg-transparent")
-        slider.classList.remove("bg-white")
-        heeader.classList.add("d-none")
-        heeader.classList.remove("d-block")        
-        options.classList.add("d-none")
-        options.classList.remove("d-block")
+        closeSlider()
     }
 })
+
 // handle change the type of the car
 options.addEventListener('click', (e) => {
     if (e.target.classList.contains("dropdown-item")) {
       getarticles(e.target.innerHTML)
       if (heeader.classList.contains("d-block")) {
-        slider.style.width = "auto"        
-        slider.classList.add("bg-transparent")
-        slider.classList.remove("bg-white")
-        heeader.classList.add("d-none")
-        heeader.classList.remove("d-block")        
-        options.classList.add("d-none")
-        options.classList.remove("d-block")
+       closeSlider()
       }
   }
         
@@ -46,7 +44,7 @@ function getarticles(car) {
     newreq.open("GET", `https://gnews.io/api/v4/search?q=${car}&apikey=92e2d6c88818ed54770eaf20cd6e1664`)
   newreq.send()
   
-     newreq.addEventListener("loadstart", () => {
+     newreq.addEventListener("loadstart", _ => {
             articles.innerHTML = `
             <div class="col-lg-6">
                             <div class="card" aria-hidden="true">
@@ -86,7 +84,7 @@ function getarticles(car) {
                         </div>
             `
     })
-    newreq.addEventListener("loadend", () => {
+    newreq.addEventListener("loadend", _ => {
         if (newreq.status >= 200  && newreq.status < 300) {
             displayarticles(JSON.parse(newreq.response).articles)
             teamname.innerHTML = car + " News <i class='fa-solid fa-car-on'></i>";
@@ -94,6 +92,7 @@ function getarticles(car) {
             localStorage.setItem('car',car)
         } 
     }) 
+  
 }
 // function to display the data
 function displayarticles(news) {
