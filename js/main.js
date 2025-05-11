@@ -44,15 +44,9 @@ options.addEventListener('click', (e) => {
 var newreq = new XMLHttpRequest()   
 function getarticles(car) {
     newreq.open("GET", `https://gnews.io/api/v4/search?q=${car}&apikey=92e2d6c88818ed54770eaf20cd6e1664`)
-    newreq.send()
-    newreq.addEventListener("loadend", () => {
-        if (newreq.status >= 200  && newreq.status < 300) {
-            displayarticles(JSON.parse(newreq.response).articles)
-            teamname.innerHTML = car + " News <i class='fa-solid fa-car-on'></i>";
-            document.title = `${car} News`
-            localStorage.setItem('car',car)
-        } 
-        newreq.addEventListener("loadstart", () => {
+  newreq.send()
+  
+     newreq.addEventListener("loadstart", () => {
             articles.innerHTML = `
             <div class="col-lg-6">
                             <div class="card" aria-hidden="true">
@@ -91,8 +85,15 @@ function getarticles(car) {
                               </div>
                         </div>
             `
-    })    
     })
+    newreq.addEventListener("loadend", () => {
+        if (newreq.status >= 200  && newreq.status < 300) {
+            displayarticles(JSON.parse(newreq.response).articles)
+            teamname.innerHTML = car + " News <i class='fa-solid fa-car-on'></i>";
+            document.title = `${car} News`
+            localStorage.setItem('car',car)
+        } 
+    }) 
 }
 // function to display the data
 function displayarticles(news) {
